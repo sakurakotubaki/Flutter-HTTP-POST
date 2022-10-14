@@ -1,24 +1,25 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http_post_app/book_page.dart';
 import 'package:http_post_app/domain/book_domain.dart';
-import 'package:http_post_app/model/model.dart';
+import 'package:http_post_app/model/post_model.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(child: MyApp()),
+  );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() {
-    return _MyAppState();
-  }
-}
-
-class _MyAppState extends State<MyApp> {
+// 切り分けたWidgetで使うためのクラスを同じページに定義
+// _futureBookでmodel.dartのクラスを引数に使う
+class PostMethod {
   final TextEditingController _controller = TextEditingController();
   Future<BookList>? _futureBook;
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,54 +28,63 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.pinkAccent,
-          title: const Text('POSTメソッドでデータを追加'),
-        ),
-        body: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(8.0),
-          // 三項演算子で、nullだったら、入力フォームを表示する
-          // 三項演算子で、nullじゃなかったら、サーバーのデータを表示したWidgetに切り替わる
-          child: (_futureBook == null) ? buildColumn() : buildFutureBuilder(),
-        ),
+      home: const PostPage(),
+    );
+  }
+}
+
+class PostPage extends ConsumerWidget {
+  const PostPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final postClass = new PostMethod();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.redAccent,
+        title: const Text('POSTメソッドでデータを追加'),
+      ),
+      body: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(8.0),
+        child: _HTTPWidget(postClass: postClass),
       ),
     );
   }
+}
 
-  Column buildColumn() {
+class _HTTPWidget extends StatelessWidget {
+  const _HTTPWidget({
+    Key? key,
+    required this.postClass,
+  }) : super(key: key);
+
+  final PostMethod postClass;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         TextField(
-          controller: _controller,
+          controller: postClass._controller,
           decoration: const InputDecoration(hintText: '本のタイトルを入力'),
         ),
         ElevatedButton(
           onPressed: () {
-            setState(() {
-              _futureBook = createBook(_controller.text);
-            });
+            postClass._futureBook = createBook(postClass._controller.text);
           },
           child: const Text('本を追加'),
         ),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const BookPage()),
+              );
+            },
+            child: const Text('BookPage'))
       ],
-    );
-  }
-
-  FutureBuilder<BookList> buildFutureBuilder() {
-    return FutureBuilder<BookList>(
-      future: _futureBook,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Text(snapshot.data!.title);
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
-
-        return const CircularProgressIndicator();
-      },
     );
   }
 }

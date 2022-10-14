@@ -1,9 +1,10 @@
-import 'package:http_post_app/model/model.dart';
+import 'package:http_post_app/model/post_model.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<BookList> createBook(String title) async {
+  print('Riverpodで実行');
   final response = await http.post(
     Uri.parse('http://localhost:3000/bookList/'),
     headers: <String, String>{
