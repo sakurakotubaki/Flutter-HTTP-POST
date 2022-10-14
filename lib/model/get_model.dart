@@ -4,16 +4,16 @@ import 'package:http/http.dart' as http;
 
 /// [mocker-serverから、データを取得するクラスを定義]
 /// [JSONのデータの中のオブジェクトと同じ名前にする]
-class BookList {
+class GetModel {
   final int id; // idは数字なのでint型
   final String title; // titleは文字なのでstring型
 
   // コンストラクターを定義
-  BookList({required this.id, required this.title});
+  GetModel({required this.id, required this.title});
 
   // 新しいインスタンスを作成し、jsonを解析してデータを
   // 新しいインスタンスに配置します。(公式を翻訳)
-  BookList.fromJson(Map<String, dynamic> json)
+  GetModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         title = json['title']; //最後のところはセミコロンをつける
 
@@ -22,15 +22,15 @@ class BookList {
 }
 
 /// [BookListを型に使いモックサーバーからデータを取得する関数.]
-List<BookList> parseBook(String responseBody) {
+List<GetModel> parseBook(String responseBody) {
   // 引数をキャストしてMap型に変換
   final parsed = convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
   // 配列をmapメソッドでループさせる。
-  return parsed.map<BookList>((json) => BookList.fromJson(json)).toList();
+  return parsed.map<GetModel>((json) => GetModel.fromJson(json)).toList();
 }
 
 // インターネットからデータを取得するメソッド
-Future<List<BookList>> fetchPosts() async {
+Future<List<GetModel>> fetchPosts() async {
   const endpoint = 'http://localhost:3000/bookList/';
   var url = Uri.parse(endpoint);
 

@@ -15,7 +15,7 @@ void main() {
 // _futureBookでmodel.dartのクラスを引数に使う
 class PostMethod {
   final TextEditingController _controller = TextEditingController();
-  Future<BookList>? _futureBook;
+  Future<PostModel>? _futureBook;
 }
 
 class MyApp extends StatelessWidget {
@@ -41,7 +41,7 @@ class PostPage extends ConsumerWidget {
     final postClass = new PostMethod();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.blueGrey,
         title: const Text('POSTメソッドでデータを追加'),
       ),
       body: Container(

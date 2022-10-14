@@ -1,6 +1,17 @@
 {
   "bookList": [
-    
+    {
+      "title": "我が輩は猫である",
+      "id": 1
+    },
+    {
+      "title": "今日の料理",
+      "id": 2
+    },
+    {
+      "title": "ワインの本",
+      "id": 3
+    }
   ],
   "profile": {
     "name": "typicode"

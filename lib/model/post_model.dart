@@ -1,11 +1,11 @@
-class BookList {
+class PostModel {
   final int id;
   final String title;
 
-  const BookList({required this.id, required this.title});
+  const PostModel({required this.id, required this.title});
 
-  factory BookList.fromJson(Map<String, dynamic> json) {
-    return BookList(
+  factory PostModel.fromJson(Map<String, dynamic> json) {
+    return PostModel(
       id: json['id'],
       title: json['title'],
     );

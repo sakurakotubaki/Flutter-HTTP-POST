@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<BookList> createBook(String title) async {
+Future<PostModel> createBook(String title) async {
   print('Riverpodで実行');
   final response = await http.post(
     Uri.parse('http://localhost:3000/bookList/'),
@@ -20,7 +20,7 @@ Future<BookList> createBook(String title) async {
     print(response.body);
     // サーバーが 201 CREATED レスポンスを返した場合。
     // JSON をパースします。
-    return BookList.fromJson(jsonDecode(response.body));
+    return PostModel.fromJson(jsonDecode(response.body));
   } else {
     // サーバーが 201 CREATED レスポンスを返さなかった場合。
     // 例外が発生する。

@@ -13,7 +13,7 @@ class BookPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('mock-serverからデータを習得する'),
-        backgroundColor: Colors.pinkAccent,
+        backgroundColor: Colors.blueGrey,
       ),
       body: Center(
         child: value.when(
